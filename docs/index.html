@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>心屿 · 情境对话（体验版）</title>
+<meta name="description" content="心屿 · 情境对话 —— 先选一个身份，再遇见一个愿意听你说话的人。">
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brandMark">心</span>
+      <span class="brandText">
+        <span class="brandName">心屿</span>
+        <span class="brandSub">XINYU · 情境对话</span>
+      </span>
+    </div>
+    <div class="topbarRight">
+      <span id="modeChip" class="chip chipWarn" hidden>演示模式</span>
+      <span id="memoryChip" class="chip chipOn">● 记忆已连接</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ 开始页 ============ -->
+    <section id="viewWelcome" class="view">
+      <div class="welcomeGrid">
+        <div class="hero">
+          <div class="eyebrow">SITUATIONAL DIALOGUE</div>
+          <h1 class="heroTitle">有些话，<br>需要一个<br>刚刚好的人来听。</h1>
+          <p class="heroSub">先选一个身份，再遇见一个愿意听你说话的人。<br>从朋友、老师、伴侣，到父亲、母亲——<br>每一种关系，都有它自己的温度。</p>
+          <blockquote class="quote">“你不需要把一切都讲清楚，<br>先坐下来就好。”<cite>—— 心屿</cite></blockquote>
+        </div>
+
+        <div class="panel glass">
+          <h2 class="panelTitle">你是以谁的身份来的？</h2>
+
+          <div class="genderRow">
+            <button class="choiceCard" data-gender="male" type="button">
+              <span class="choiceEmoji">👦</span>
+              <span class="choiceName">男生</span>
+              <small class="choiceDesc">以他的视角，被理解</small>
+            </button>
+            <button class="choiceCard" data-gender="female" type="button">
+              <span class="choiceEmoji">👧</span>
+              <span class="choiceName">女生</span>
+              <small class="choiceDesc">以她的视角，被接住</small>
+            </button>
+          </div>
+
+          <label class="fieldLabel" for="userName">你的名字（选填）</label>
+          <input id="userName" class="textInput" maxlength="20" placeholder="例如：小林、阿杰" autocomplete="off">
+
+          <label class="fieldLabel">你的年龄</label>
+          <div class="stepper" id="userAgeStepper">
+            <button class="stepBtn" data-step="-1" type="button" aria-label="减少一岁">−</button>
+            <input id="userAge" class="stepValue" type="text" inputmode="numeric" value="24" aria-label="年龄">
+            <span class="stepSuffix">岁</span>
+            <button class="stepBtn" data-step="1" type="button" aria-label="增加一岁">＋</button>
+          </div>
+
+          <button id="enterBtn" class="btn primary wide" type="button" disabled>进入心屿 →</button>
+          <p id="profileLimit" class="notice" hidden>用户角色已满 5 个。请先在下方删除一个资料，再创建新的性别／年龄。</p>
+        </div>
+      </div>
+
+      <div class="sectionHead">
+        <h2 class="sectionTitle small">我的身份</h2>
+        <p class="sectionSub">点一下卡片，用这个身份进入；删除用卡片右上角的按钮。</p>
+      </div>
+      <div id="profileList" class="cardGrid"></div>
+    </section>
+
+    <!-- ============ 角色页 ============ -->
+    <section id="viewRoles" class="view" hidden>
+      <div class="rolesHead">
+        <button id="rolesBack" class="btn icon" type="button" title="返回上一步">←</button>
+        <span id="identityChip" class="chip">你以「女生 · 24 岁」的身份进入</span>
+      </div>
+
+      <h1 class="sectionTitle">想请谁来，陪你聊一会儿？</h1>
+      <p id="rolesSub" class="sectionSub">每一种关系，都会用不同的方式接住你。选一个此刻最想见的人。</p>
+
+      <div id="relationList" class="relationGrid"></div>
+
+      <div class="sectionHead">
+        <h2 class="sectionTitle small">我的角色</h2>
+        <span id="roleLimitHint" class="muted"></span>
+      </div>
+      <div id="roleList" class="cardGrid"></div>
+
+      <div class="rolesActions">
+        <button id="continueBtn" class="btn primary" type="button" disabled>和 ta 聊聊 →</button>
+        <button id="deleteRoleBtn" class="btn ghost" type="button" disabled>删除角色</button>
+      </div>
+    </section>
+
+    <!-- ============ 聊天页 ============ -->
+    <section id="viewChat" class="view" hidden>
+      <div class="chatHead">
+        <button id="chatBack" class="btn icon" type="button" title="回到角色选择">←</button>
+        <div id="chatAvatar" class="avatar">🫂</div>
+        <div class="chatTitles">
+          <div id="chatName" class="chatName">角色</div>
+          <div id="chatSub" class="chatSub">正在听你说话</div>
+        </div>
+        <span class="chip chipGhost" id="chatRoleChip">角色</span>
+        <button id="restartBtn" class="btn ghost" type="button">开始新的对话</button>
+      </div>
+
+      <div id="sessionStrip" class="sessionStrip"></div>
+
+      <div id="messages" class="messages">
+        <div id="emptyState" class="emptyState">
+          <div class="emptyTitle">从你说第一句话开始</div>
+          <p class="muted">不预设剧情，也不自动开场；第一句话由你开始。</p>
+        </div>
+      </div>
+
+      <div class="composer" id="composer">
+        <textarea id="chatInput" rows="1" placeholder="说点什么…  Enter 发送"></textarea>
+        <button id="sendBtn" class="btn send" type="button" disabled title="发送（Enter）">↑</button>
+      </div>
+      <p class="hint">Enter 发送 · Shift + Enter 换行</p>
+    </section>
+  </main>
+</div>
+
+<!-- ============ 角色编辑弹窗 ============ -->
+<div id="dlgRole" class="modal" hidden>
+  <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+    <h3 id="dlgTitle" class="modalTitle">创建角色</h3>
+
+    <label class="fieldLabel">关系</label>
+    <div id="dlgRelations" class="chipRow"></div>
+
+    <label class="fieldLabel">角色性别</label>
+    <div class="genderRow small">
+      <button class="choiceCard slim" data-rgender="male" type="button"><span class="choiceEmoji">👨</span><span class="choiceName">男性</span></button>
+      <button class="choiceCard slim" data-rgender="female" type="button"><span class="choiceEmoji">👩</span><span class="choiceName">女性</span></button>
+    </div>
+
+    <label class="fieldLabel">角色年龄 <span id="dlgAgeHint" class="muted"></span></label>
+    <div class="stepper" id="roleAgeStepper">
+      <button class="stepBtn" data-step="-1" type="button" aria-label="减少一岁">−</button>
+      <input id="roleAge" class="stepValue" type="text" inputmode="numeric" value="30" aria-label="角色年龄">
+      <span class="stepSuffix">岁</span>
+      <button class="stepBtn" data-step="1" type="button" aria-label="增加一岁">＋</button>
+    </div>
+
+    <label class="fieldLabel" for="dlgPersonality">性格</label>
+    <textarea id="dlgPersonality" class="textInput" rows="3" maxlength="120" placeholder="例如：话不多，但很会照顾人"></textarea>
+
+    <label class="fieldLabel" for="dlgName">名字（选填）</label>
+    <input id="dlgName" class="textInput" maxlength="20" placeholder="不填也可以，之后只能设置一次" autocomplete="off">
+
+    <p id="dlgError" class="error" hidden></p>
+
+    <div class="modalActions">
+      <button id="dlgCancel" class="btn ghost" type="button">取消</button>
+      <button id="dlgSubmit" class="btn primary" type="button">生成角色</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
