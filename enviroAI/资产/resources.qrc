@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="database/schema.sql">../数据库/schema.sql</file>
+        <file alias="assets/icon.png">icon.png</file>
+    </qresource>
+</RCC>
